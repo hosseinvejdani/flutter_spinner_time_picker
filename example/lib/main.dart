@@ -37,6 +37,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   TimeOfDay selectedTime = TimeOfDay.now();
+  Duration selectedDuration = const Duration(hours: 1, minutes: 20, seconds: 5);
 
   void _showTimePicker() async {
     final pickedTime = await showSpinnerTimePicker(
@@ -48,6 +49,19 @@ class _MyHomePageState extends State<MyHomePage> {
     if (pickedTime != null) {
       setState(() {
         selectedTime = pickedTime;
+      });
+    }
+  }
+
+  void _showDurationPicker() async {
+    final pickedDuration = await showSpinnerDurationPicker(
+      context,
+      initDuration: selectedDuration,
+    );
+
+    if (pickedDuration != null) {
+      setState(() {
+        selectedDuration = pickedDuration;
       });
     }
   }
@@ -75,6 +89,21 @@ class _MyHomePageState extends State<MyHomePage> {
             FilledButton(
               onPressed: _showTimePicker,
               child: const Text('Pick a Time'),
+            ),
+            const SizedBox(height: 50),
+            const Text(
+              'Selected Duration:',
+              style: TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              '${selectedDuration.inHours}:${selectedDuration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${(selectedDuration.inSeconds.remainder(60).toString().padLeft(2, '0'))}',
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            FilledButton(
+              onPressed: _showDurationPicker,
+              child: const Text('Pick a Duration'),
             ),
           ],
         ),
